@@ -161,6 +161,49 @@ export class GustoApiService {
         data: 'Failed to fetch pay schedule info',
       }
     }
-  } 
+  }
+
+  async getEmployees(uuid: string, options: {
+    terminated?: boolean
+    searchTerm?: string
+  }) {
+    try {
+      const employees = await this.gustoClient.employees.list({
+        companyId: uuid,
+        terminated: options.terminated,
+        searchTerm: options.searchTerm,
+      });
+      logger.info("[Gusto] Employees:", employees);
+      return {
+        error: false,
+        data: employees,
+      };
+    } catch (error) {
+      logger.error("[Gusto] Error fetching employees:", error);
+      return {
+        error: true,
+        data: 'Failed to fetch employees',
+      }
+    }
+  }
+
+  async getEmployee(employeeId: string) {
+    try {
+      const employee = await this.gustoClient.employees.get({
+        employeeId: employeeId,
+      });
+      logger.info("[Gusto] Employee Info:", employee);
+      return {
+        error: false,
+        data: employee,
+      };
+    } catch (error) {
+      logger.error("[Gusto] Error fetching employee info:", error);
+      return {
+        error: true,
+        data: 'Failed to fetch employee info',
+      }
+    }
+  }
   
 }

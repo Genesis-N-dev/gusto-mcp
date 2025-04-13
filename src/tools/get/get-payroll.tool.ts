@@ -3,6 +3,7 @@ import { CreateTool } from "../../helpers/create-tool.js";
 import { GustoApiService } from "../../services/gusto-api-service/index.js";
 import { z } from "zod";
 import { Payroll } from "@gusto/embedded-api/models/components/payroll.js";
+import { generatePayrollText } from "../../helpers/formatters.js";
 
 const getPayrollTool = CreateTool(
     "get-payroll",
@@ -40,50 +41,5 @@ const getPayrollTool = CreateTool(
     }
 )
 
-const generatePayrollText = (payroll: Payroll) => {
-        const type = payroll.offCycle ? "Off-Cycle" : "Regular";
-        
-        // Determine status based on processed flag
-        const status = payroll.processed ? "Processed" : "Pending";
-        
-        // Format pay period dates
-        const payPeriod = payroll.payPeriod 
-            ? `${payroll.payPeriod.startDate} to ${payroll.payPeriod.endDate}` 
-            : "No pay period defined";
-        
-        // Get or format dates and times
-        const checkDate = payroll.checkDate || "Not scheduled";
-        const processedDate = payroll.processedDate || "Not processed";
-        const calculatedAt = payroll.calculatedAt || "Not calculated";
-        const createdAt = payroll.calculatedAt || "Unknown";
-        const payrollDeadline = payroll.payrollDeadline || "No deadline";
-        
-        // Format financial details if available
-        let financialDetails = "";
-        if (payroll.totals) {
-            const t = payroll.totals;
-            financialDetails = `
-        Financial Details:
-        Gross Pay: ${t.grossPay}
-        Net Pay: ${t.netPay}
-        Employee Taxes: ${t.employeeTaxes}
-        Employer Taxes: ${t.employerTaxes}
-        Employee Commissions: ${t.employeeCommissions}
-        Employee Benefits Deductions: ${t.employeeBenefitsDeductions}
-        Other Deductions: ${t.otherDeductions}
-        Check Amount: ${t.checkAmount}`;
-        }
-        
-        return `Payroll Information:
-    Pay Period: ${payPeriod}
-    Type: ${type}
-    Status: ${status}
-    External: ${payroll.external ? "Yes" : "No"}
-    Check Date: ${checkDate}
-    Created At: ${createdAt}
-    Processed Date: ${processedDate}
-    Calculated At: ${calculatedAt}
-    Payroll Deadline: ${payrollDeadline}${financialDetails}`;
-}
 
 export default getPayrollTool;
