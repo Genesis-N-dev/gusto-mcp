@@ -1,7 +1,10 @@
-import { GustoEmbedded } from "@gusto/embedded-api";
-import { GustoAuthService } from "../gusto-auth-service/index.js";
-import { logger } from "../../helpers/logger.js";
-import { PayrollTypes, ProcessingStatuses } from "@gusto/embedded-api/models/operations/getv1companiescompanyidpayrolls.js";
+import { GustoEmbedded } from '@gusto/embedded-api';
+import { GustoAuthService } from '../gusto-auth-service/index.js';
+import { logger } from '../../helpers/logger.js';
+import {
+  PayrollTypes,
+  ProcessingStatuses,
+} from '@gusto/embedded-api/models/operations/getv1companiescompanyidpayrolls.js';
 
 export class GustoApiService {
   private static instance: GustoApiService;
@@ -10,7 +13,7 @@ export class GustoApiService {
   private constructor() {
     this.gustoClient = new GustoEmbedded({
       companyAccessAuth: GustoAuthService.getInstance().getAccessToken() as string,
-      server: "demo",
+      server: 'demo',
     });
   }
 
@@ -21,67 +24,70 @@ export class GustoApiService {
     return GustoApiService.instance;
   }
 
-   async getTokenInfo() {
+  async getTokenInfo() {
     try {
       const tokenInfo = await this.gustoClient.introspection.getInfo({});
-      logger.info("[Gusto] Token Info:", tokenInfo);
+      logger.info('[Gusto] Token Info:', tokenInfo);
       return {
         error: false,
         data: tokenInfo,
       };
     } catch (error) {
-      logger.error("[Gusto] Error fetching token info:", error);
+      logger.error('[Gusto] Error fetching token info:', error);
       return {
         error: true,
         data: 'Failed to fetch token info',
-      }
+      };
     }
-   }
+  }
 
-   async getCompanyInfo(uuid: string) {
+  async getCompanyInfo(uuid: string) {
     try {
       const companyInfo = await this.gustoClient.companies.get({
         companyId: uuid,
       });
-      logger.info("[Gusto] Company Info:", companyInfo);
-        return {
-            error: false,
-            data: companyInfo,
-        };
+      logger.info('[Gusto] Company Info:', companyInfo);
+      return {
+        error: false,
+        data: companyInfo,
+      };
     } catch (error) {
-        logger.error("[Gusto] Error fetching company info:", error);
-        return {
-            error: true,
-            data: 'Failed to fetch company info',
-        }
+      logger.error('[Gusto] Error fetching company info:', error);
+      return {
+        error: true,
+        data: 'Failed to fetch company info',
+      };
     }
-   }
+  }
 
-   async getAllAdmins(uuid: string) {
+  async getAllAdmins(uuid: string) {
     try {
       const admins = await this.gustoClient.companies.listAdmins({
-        companyId: uuid
+        companyId: uuid,
       });
-      logger.info("[Gusto] Admins:", admins);
+      logger.info('[Gusto] Admins:', admins);
       return {
         error: false,
         data: admins,
       };
     } catch (error) {
-      logger.error("[Gusto] Error fetching admins:", error);
+      logger.error('[Gusto] Error fetching admins:', error);
       return {
         error: true,
         data: 'Failed to fetch admins',
-      }
+      };
     }
   }
 
-  async getAllPayrolls(uuid: string, options: {
-    processingStatus?: ProcessingStatuses[];
-    payrollTypes?: PayrollTypes[];
-    startDate?: string;
-    endDate?: string;
-  } ) {
+  async getAllPayrolls(
+    uuid: string,
+    options: {
+      processingStatus?: ProcessingStatuses[];
+      payrollTypes?: PayrollTypes[];
+      startDate?: string;
+      endDate?: string;
+    }
+  ) {
     try {
       const payrolls = await this.gustoClient.payrolls.list({
         companyId: uuid,
@@ -90,17 +96,17 @@ export class GustoApiService {
         startDate: options.startDate,
         endDate: options.endDate,
       });
-      logger.info("[Gusto] Payrolls:", payrolls);
+      logger.info('[Gusto] Payrolls:', payrolls);
       return {
         error: false,
         data: payrolls,
       };
     } catch (error) {
-      logger.error("[Gusto] Error fetching payrolls:", error);
+      logger.error('[Gusto] Error fetching payrolls:', error);
       return {
         error: true,
         data: 'Failed to fetch payrolls',
-      }
+      };
     }
   }
 
@@ -110,17 +116,17 @@ export class GustoApiService {
         companyId: companyUuid,
         payrollId: payroll,
       });
-      logger.info("[Gusto] Payroll Info:", payrollInfo);
+      logger.info('[Gusto] Payroll Info:', payrollInfo);
       return {
         error: false,
         data: payrollInfo,
       };
     } catch (error) {
-      logger.error("[Gusto] Error fetching payroll info:", error);
+      logger.error('[Gusto] Error fetching payroll info:', error);
       return {
         error: true,
         data: 'Failed to fetch payroll info',
-      }
+      };
     }
   }
 
@@ -129,17 +135,17 @@ export class GustoApiService {
       const paySchedules = await this.gustoClient.paySchedules.getAll({
         companyId: uuid,
       });
-      logger.info("[Gusto] Pay Schedules:", paySchedules);
+      logger.info('[Gusto] Pay Schedules:', paySchedules);
       return {
         error: false,
         data: paySchedules,
       };
     } catch (error) {
-      logger.error("[Gusto] Error fetching pay schedules:", error);
+      logger.error('[Gusto] Error fetching pay schedules:', error);
       return {
         error: true,
         data: 'Failed to fetch pay schedules',
-      }
+      };
     }
   }
 
@@ -149,41 +155,44 @@ export class GustoApiService {
         companyId: uuid,
         payScheduleId: payScheduleId,
       });
-      logger.info("[Gusto] Pay Schedule Info:", paySchedule);
+      logger.info('[Gusto] Pay Schedule Info:', paySchedule);
       return {
         error: false,
         data: paySchedule,
       };
     } catch (error) {
-      logger.error("[Gusto] Error fetching pay schedule info:", error);
+      logger.error('[Gusto] Error fetching pay schedule info:', error);
       return {
         error: true,
         data: 'Failed to fetch pay schedule info',
-      }
+      };
     }
   }
 
-  async getEmployees(uuid: string, options: {
-    terminated?: boolean
-    searchTerm?: string
-  }) {
+  async getEmployees(
+    uuid: string,
+    options: {
+      terminated?: boolean;
+      searchTerm?: string;
+    }
+  ) {
     try {
       const employees = await this.gustoClient.employees.list({
         companyId: uuid,
         terminated: options.terminated,
         searchTerm: options.searchTerm,
       });
-      logger.info("[Gusto] Employees:", employees);
+      logger.info('[Gusto] Employees:', employees);
       return {
         error: false,
         data: employees,
       };
     } catch (error) {
-      logger.error("[Gusto] Error fetching employees:", error);
+      logger.error('[Gusto] Error fetching employees:', error);
       return {
         error: true,
         data: 'Failed to fetch employees',
-      }
+      };
     }
   }
 
@@ -192,18 +201,17 @@ export class GustoApiService {
       const employee = await this.gustoClient.employees.get({
         employeeId: employeeId,
       });
-      logger.info("[Gusto] Employee Info:", employee);
+      logger.info('[Gusto] Employee Info:', employee);
       return {
         error: false,
         data: employee,
       };
     } catch (error) {
-      logger.error("[Gusto] Error fetching employee info:", error);
+      logger.error('[Gusto] Error fetching employee info:', error);
       return {
         error: true,
         data: 'Failed to fetch employee info',
-      }
+      };
     }
   }
-  
 }
