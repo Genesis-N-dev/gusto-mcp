@@ -9,7 +9,7 @@ export class GustoMcpServer {
   public static GetServer(): McpServer {
     if (GustoMcpServer.instance === null) {
       GustoMcpServer.instance = new McpServer({
-        name: "Xero MCP Server",
+        name: "Gusto MCP Server",
         version: "1.0.0",
         capabilities: {
           resources: {},

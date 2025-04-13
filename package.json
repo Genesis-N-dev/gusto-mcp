@@ -9,7 +9,7 @@
   "type": "module",
   "main": "build/index.js",
   "bin": {
-    "xero-mcp": "./build/index.js"
+    "gusto-mcp": "./build/index.js"
   },
   "files": [
     "build"
