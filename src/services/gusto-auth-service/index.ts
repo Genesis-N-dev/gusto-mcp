@@ -11,7 +11,7 @@ const GUSTO_INITIAL_ACCESS_TOKEN = process.env.GUSTO_ACCESS_TOKEN;
 const GUSTO_REFRESH_TOKEN = process.env.GUSTO_REFRESH_TOKEN;
 
 if (!GUSTO_API_URL || !GUSTO_CLIENT_ID || !GUSTO_CLIENT_SECRET || !GUSTO_REFRESH_TOKEN) {
-  throw new Error("Missing required Gusto environment variables");
+  throw new Error('Missing required Gusto environment variables');
 }
 
 export class GustoAuthService {
@@ -32,7 +32,7 @@ export class GustoAuthService {
 
   public async authenticate(): Promise<void> {
     try {
-      logger.info("[Gusto] Refreshing company access token...");
+      logger.info('[Gusto] Refreshing company access token...');
 
       const response = await axios.post(`${GUSTO_API_URL}/oauth/token`, {
         client_id: GUSTO_CLIENT_ID,
@@ -49,11 +49,11 @@ export class GustoAuthService {
 
       this.stopAutoRefresh();
 
-      logger.info("[Gusto] Company token refreshed successfully.");
+      logger.info('[Gusto] Company token refreshed successfully.');
       this.setupAutoRefresh(expires_in);
     } catch (error: any) {
       logger.error(`[Gusto] Token refresh failed: ${error.message}`);
-      throw new Error("Gusto authentication failed");
+      throw new Error('Gusto authentication failed');
     }
   }
 
@@ -72,7 +72,7 @@ export class GustoAuthService {
       try {
         await this.authenticate();
       } catch (err) {
-        logger.error("[Gusto] Auto-refresh failed", err);
+        logger.error('[Gusto] Auto-refresh failed', err);
       }
     }, refreshTime);
   }
