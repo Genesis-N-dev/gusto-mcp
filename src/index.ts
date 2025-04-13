@@ -18,6 +18,7 @@ const main = async () => {
 };
 
 main().catch((error) => {
+  console.error('Error starting Gusto MCP Server:', error);
   logger.error('Error starting Gusto MCP Server:', error);
   process.exit(1);
 });

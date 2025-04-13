@@ -4,8 +4,8 @@ import { GustoApiService } from '../../services/gusto-api-service/index.js';
 import { z } from 'zod';
 import { formatPaySchedule } from '../../helpers/formatters.js';
 
-const getPaySchedulesTool = CreateTool(
-  'get-pay-schedules',
+const getPayScheduleTool = CreateTool(
+  'get-pay-schedule',
   `Retrieves information about a company’s pay schedule, including frequency, anchor dates, monthly pay days, and assignment status. 
     Also indicates whether Autopilot is enabled and whether the schedule is currently active or assigned to employees`,
   {
@@ -44,4 +44,4 @@ const getPaySchedulesTool = CreateTool(
   }
 );
 
-export default getPaySchedulesTool;
+export default getPayScheduleTool;
